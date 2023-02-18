@@ -296,8 +296,7 @@ function sorter($dbname, $table, $what, $sort)
     mysqli_close($conn);
 }
 
-function out($res)
-{
+function out($res){
     $Cf = '';
     $Cs = '';
 
@@ -345,8 +344,7 @@ function out($res)
                                     ";
     }
 }
-function SpecialReadTwo($dbname, $table, $what, $where1, $where2, $input1, $input2)
-{
+function SpecialReadTwo($dbname, $table, $what, $where1, $where2, $input1, $input2){
     $servername = "localhost";
     $Suser = "root";
 
@@ -358,5 +356,127 @@ function SpecialReadTwo($dbname, $table, $what, $where1, $where2, $input1, $inpu
 
     mysqli_close($conn);
     return $quary;
+}
+
+
+function CSV($dbname){
+    $servername = "localhost";
+    $Suser = "root";
+
+    $Spass = "";
+
+    $conn = mysqli_connect($servername, $Suser, $Spass, $dbname);
+
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+    header('Content-Type:text/csv ;');
+    header('Content-Disposition:attachment ; filename =dataCSV.csv');
+    $output = fopen("php://output","w");
+    fputcsv($output,array("ID","Title","Article","State","Comments","Published at"));
+    $query = Read('F1','MyPosts','*');
+    while ($res = mysqli_fetch_assoc($query)) {
+        if($res['shower']==1){
+            $tmp1='';
+            $tmp2='';
+
+            if($res['enabled']){
+                $tmp1 = "YES";
+
+            }else{
+                $tmp1="NO";
+            }
+
+
+            if($res['comments_enabled']){
+                $tmp2 = "YES";
+
+            }else{
+                $tmp2="NO";
+            }
+
+            $puter = array($res['id'],$res['title'],$res['article'],$tmp1,$tmp2,$res['date_published']);
+            fputcsv($output,$puter);
+        }
+
+    }
+    fclose($output);
+    mysqli_close($conn);
+
+}
+
+function PDF ($dbname){
+    $servername = "localhost";
+    $Suser = "root";
+
+    $Spass = "";
+
+    $conn = mysqli_connect($servername, $Suser, $Spass, $dbname);
+
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+    $query = Read('F1','MyPosts','*');
+
+    $html = "<table class='table table-boarderd'>";
+    $html .= "
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Article</th>
+                <th>State</th>
+                <th>Comments</th>
+                <th>Published at</th>
+            </tr>
+        </thead>
+    
+    ";
+    $html .="<tbody>";
+    while ($res = mysqli_fetch_assoc($query)) {
+        if($res['shower']==1){
+            $tmp1='';
+            $tmp2='';
+
+            if($res['enabled']){
+                $tmp1 = "YES";
+
+            }else{
+                $tmp1="NO";
+            }
+
+
+            if($res['comments_enabled']){
+                $tmp2 = "YES";
+
+            }else{
+                $tmp2="NO";
+            }
+
+            $html .="
+                <tr>
+                    <td> " . $res['id'] . "</td>
+                    <td> " . $res['title'] . " </td>
+                    <td > <div style=' width : 500px ; height : 25px'>" . $res['article'] . "</div> </td>
+                    <td> " . $tmp1 . "</td>
+                    <td> " . $tmp1 . "</td>
+                    <td > " . $res['date_published'] . " </td>
+                </tr>
+            ";
+
+        }
+
+    }
+    $html .="
+        </tbody></table>
+    ";
+
+    require_once('tcpdf/tcpdf.php');  
+    $obj_pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);  
+    $obj_pdf->SetCreator(PDF_CREATOR);
+    $obj_pdf->AddPage(); 
+    $obj_pdf ->writeHTML($html);
+    $obj_pdf->Output('file.pdf', 'I'); 
+
 }
 ?>

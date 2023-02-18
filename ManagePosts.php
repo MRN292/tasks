@@ -8,17 +8,17 @@ $SeERR = '';
 
 session_start();
 
-if (isset($_SESSION["user"])) {
-    if (time() - $_SESSION["login_time_stamp"] > 10) {
-        $SeERR="session ended";
-        session_unset();
-        session_destroy();
+// if (isset($_SESSION["user"])) {
+//     if (time() - $_SESSION["login_time_stamp"] > 10) {
+//         $SeERR="session ended";
+//         session_unset();
+//         session_destroy();
 
-        // header("Location:login.php");
-    }
-} else {
-    header("Location:login.php");
-}
+//         // header("Location:login.php");
+//     }
+// } else {
+//     header("Location:login.php");
+// }
 
 
 
@@ -29,6 +29,15 @@ if (isset($_GET['delete'])) {
     DeleteR('F1', 'MyPosts', $id);
     header("Refresh:0; url=ManagePosts.php");
 }
+if (isset($_GET['CSV'])) {
+    CSV('F1');
+    exit;
+}
+if (isset($_GET['PDF'])) {
+    PDF('F1');
+    exit;
+}
+
 
 
 ?>
@@ -239,13 +248,17 @@ if (isset($_GET['delete'])) {
 
 
     </table>
-
-
-    <!-- <a class='btn btn-primary btn-sm' href='/PROJ/EditPosts.php?id=" . $res['id'] . " '>Edit</a> -->
-
-
     </div>
+    <center>
+        <form action="" method='GET'>
+            <button name='CSV' class="btn btn-success">Export to CSV</button>
+            <button onclick="window.print()" class="btn btn-danger">PRINT</button>
+            <button name='PDF' class="btn btn-success">Export to PDF</button>
 
+        </form>
+
+
+    </center>
 </body>
 
 </html>
