@@ -457,10 +457,10 @@ function PDF ($dbname){
                 <tr>
                     <td> " . $res['id'] . "</td>
                     <td> " . $res['title'] . " </td>
-                    <td > <div style=' width : 500px ; height : 25px'>" . $res['article'] . "</div> </td>
+                    <td> " . $res['article'] . "</td>
                     <td> " . $tmp1 . "</td>
                     <td> " . $tmp1 . "</td>
-                    <td > " . $res['date_published'] . " </td>
+                    <td> " . $res['date_published'] . " </td>
                 </tr>
             ";
 
@@ -474,7 +474,7 @@ function PDF ($dbname){
     require_once('tcpdf/tcpdf.php');  
     $obj_pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);  
     $obj_pdf->SetCreator(PDF_CREATOR);
-    $obj_pdf->AddPage(); 
+    $obj_pdf->AddPage();  
     $obj_pdf ->writeHTML($html);
     $obj_pdf->Output('file.pdf', 'I'); 
 

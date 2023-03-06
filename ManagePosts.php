@@ -61,10 +61,10 @@ if (isset($_GET['PDF'])) {
         <?php
         if (!empty($SeERR)) {
             echo "
-                <div class='alert alert-warning alert-dismissible fale show' role='alert'>
-                <strong>$SeERR</strong>
-                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close' >
-                </div>
+                    <div class='alert alert-warning alert-dismissible fale show' role='alert'>
+                    <strong>$SeERR</strong>
+                    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close' >
+                    </div>
                 ";
         }
 
@@ -98,7 +98,7 @@ if (isset($_GET['PDF'])) {
                         } ?>>Alphabet</option>
                         <option value="CreationDateOLD" <?php if (isset($_GET['sort']) && $_GET['sort'] == "CreationDateOLD") {
                             echo 'selected';
-                        } ?>>Creation Date (OLDER)</option>
+                        } ?>>Creation Date(OLDER)</option>
                         <option value="CreationDateNEW" <?php if (isset($_GET['sort']) && $_GET['sort'] == "CreationDateNEW") {
                             echo 'selected';
                         } ?>>Creation Date(NEWER)</option>
